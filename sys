@@ -1,0 +1,59 @@
+#!/bin/bash
+
+HOST="$1"
+
+package_files="./shared/pkgs"
+services="./shared/services"
+# sync dirs must have trailing /
+sync_dirs="./shared/system/"
+
+echoerr() { printf "%s\n" "$*" >&2; }
+
+if [ ! -z "$HOST" ]; then
+    if [ ! -d "./$HOST" ]; then
+        echoerr "No directory found for $HOST"
+        exit 1
+    fi
+    package_files+=" ./$HOST/pkgs"
+    services+=" ./$HOST/services"
+    # sync dirs must have trailing /
+    sync_dirs+=" ./$HOST/system/"
+else
+    echo "No host defined, only configuring shared system conf"
+fi
+
+install_packages() {
+    for pkgs in $package_files; do
+        if [ -f "$pkgs" ]; then
+            sudo dnf install --assumeyes $(cat "$pkgs")
+        fi
+    done
+}
+
+enable_services() {
+    for svc_file in $services; do
+        if [ -f "$svc_file" ]; then
+            for svc in $(cat $svc_file); do
+                sudo systemctl enable "$svc"
+            done;
+        fi
+    done
+}
+
+sync_files() {
+    for dir in $sync_dirs; do
+        if [ -d "$dir" ]; then
+            sudo rsync -rv "$dir" /
+        fi
+    done
+}
+
+add_rpmfusion() {
+    sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+}
+
+add_rpmfusion
+sudo dnf update --assumeyes --refresh
+install_packages
+sync_files
+enable_services
