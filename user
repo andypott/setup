@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dot_dirs="./shared/home"
+dot_dirs="./shared_desktop/home"
 
 if [ ! -z "$HOST" ]; then
     if [ ! -d "./$HOST" ]; then
