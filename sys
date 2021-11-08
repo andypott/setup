@@ -69,6 +69,8 @@ desktop() {
 server() {
     sudo dnf update --assumeyes --refresh
     install_packages
+    # Remove network connections as we only want ours there
+    sudo rm /etc/NetworkManager/system-connections/*
     sync_files
     enable_services
     sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
