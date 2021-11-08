@@ -71,6 +71,7 @@ server() {
     install_packages
     sync_files
     enable_services
+    sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 }
 
 case $HOST in
