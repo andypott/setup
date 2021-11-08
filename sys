@@ -72,6 +72,8 @@ server() {
     # Remove network connections as we only want ours there
     sudo rm /etc/NetworkManager/system-connections/*
     sync_files
+    # Set appropriate permissions for network
+    sudo chmod 0600 /etc/NetworkManager/system-connections/*
     enable_services
     sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 }
