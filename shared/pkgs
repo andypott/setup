@@ -1,6 +1,7 @@
 @development-tools
 @multimedia
 clang
+clang-tools-extra
 cmake
 fzf
 gcc-c++
