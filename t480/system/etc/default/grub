@@ -3,6 +3,6 @@ GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
 GRUB_DEFAULT=saved
 GRUB_DISABLE_SUBMENU=true
 GRUB_TERMINAL_OUTPUT="console"
-GRUB_CMDLINE_LINUX="rd.lvm.lv=fedora_fedora/root consoleblank=60 rhgb quiet"
+GRUB_CMDLINE_LINUX="rd.lvm.lv=fedora_fedora/root rhgb quiet consoleblank=60"
 GRUB_DISABLE_RECOVERY="true"
 GRUB_ENABLE_BLSCFG=true
