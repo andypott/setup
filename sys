@@ -108,6 +108,7 @@ createGitUser() {
     sudo rsync -rv "t480/git/git-shell-commands/" /home/git/git-shell-commands/
 
     sudo chown -R git:git /home/git
+    sudo chown -R git:git /mnt/git
 }
 
 case $HOST in
