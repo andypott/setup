@@ -102,8 +102,12 @@ createGitUser() {
         sudo mkdir /home/git/.ssh && sudo chmod 700 /home/git/.ssh
         sudo cp ./t480/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys &&
             sudo chmod 600 /home/git/.ssh/authorized_keys
-        sudo chown -R git:git /home/git
+        sudo mkdir /home/git/git-shell-commands
+        sudo ln -s /mnt/git /home/git/repos
     fi
+    sudo rsync -rv "t480/git/git-shell-commands/" /home/git/git-shell-commands/
+
+    sudo chown -R git:git /home/git
 }
 
 case $HOST in
