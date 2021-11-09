@@ -3,6 +3,6 @@
 name="$1.git"
 
 mkdir "~/repos/$name"
-pushd "~repos/$name"
+pushd "~/repos/$name"
 git --bare init
 popd
