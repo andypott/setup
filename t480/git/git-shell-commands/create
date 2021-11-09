@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-name="$1.git"
+dir="/home/git/repos/$1.git"
 
-mkdir "~/repos/$name"
-pushd "~/repos/$name"
+mkdir $dir
+pushd $dir
 git --bare init
 popd

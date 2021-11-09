@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-pushd "~/repos/"
+pushd "home/git/repos/"
 ls -1
 popd
