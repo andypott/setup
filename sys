@@ -81,11 +81,15 @@ server() {
 addT480Partitions() {
     mkdir -p /mnt/storage
     mkdir -p /mnt/snapshots
+    mkdir -p /mnt/git
     if ! grep /mnt/storage /etc/fstab; then
         echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/storage btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@storage 0 0" | sudo tee -a /etc/fstab
     fi
     if ! grep /mnt/snapshots /etc/fstab; then
         echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/snapshots btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@snapshots 0 0" | sudo tee -a /etc/fstab
+    fi
+    if ! grep /mnt/git /etc/fstab; then
+        echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/snapshots btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@git 0 0" | sudo tee -a /etc/fstab
     fi
 }
 
