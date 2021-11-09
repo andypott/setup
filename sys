@@ -89,7 +89,7 @@ addT480Partitions() {
         echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/snapshots btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@snapshots 0 0" | sudo tee -a /etc/fstab
     fi
     if ! grep /mnt/git /etc/fstab; then
-        echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/snapshots btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@git 0 0" | sudo tee -a /etc/fstab
+        echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/git btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@git 0 0" | sudo tee -a /etc/fstab
     fi
 }
 
