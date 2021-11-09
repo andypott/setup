@@ -93,10 +93,24 @@ addT480Partitions() {
     fi
 }
 
+createGitUser() {
+    if ! id -u git; then
+        if ! grep git-shell /etc/shells; then
+            echo $(which git-shell) | sudo tee -a /etc/shells
+        fi
+        sudo useradd git -m -s $(which git-shell)
+        sudo mkdir /home/git/.ssh && sudo chmod 700 /home/git/.ssh
+        sudo cp ./t480/git/.ssh/authorized_keys /home/git/.ssh/authorized_keys &&
+            sudo chmod 600 /home/git/.ssh/authorized_keys
+        sudo chown -R git:git /home/git
+    fi
+}
+
 case $HOST in
     t480)
         setVars "./shared_server"
         server
+        createGitUser
         addT480Partitions
         ;;
     razorbook)
