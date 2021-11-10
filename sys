@@ -121,6 +121,7 @@ setupSamba() {
         sudo semanage fcontext --add --type  "samba_share_t" /mnt/storage
         sudo restorecon -R /mnt/storage
     fi
+    sudo chown -R ftp:ftp /mnt/storage
     sudo systemctl restart smb
 }
 
