@@ -40,7 +40,7 @@ enable_services() {
     for svc_file in $services; do
         if [ -f "$svc_file" ]; then
             for svc in $(cat $svc_file); do
-                sudo systemctl enable "$svc"
+                sudo systemctl enable "$svc" --now
             done;
         fi
     done
@@ -119,6 +119,8 @@ case $HOST in
         server
         addT480Partitions
         createGitUser
+        sudo firewall-cmd --permanent --zone=FedoraServer --add-service=samba
+        sudo firewall-cmd --reload
         ;;
     razorbook)
         setVars "./shared_desktop"
