@@ -110,7 +110,18 @@ createGitUser() {
     fi
     sudo rsync -rv "t480/git/git-shell-commands/" /home/git/git-shell-commands/
     sudo chown -R git:git /home/git
+}
 
+setupSamba() {
+    if ! sudo firewall-cmd --zone=FedoraServer --query-service=samba; then
+        sudo firewall-cmd --permanent --zone=FedoraServer --add-service=samba
+        sudo firewall-cmd --reload
+    fi
+    if ! ls -ldZ /mnt/storage | grep samba_share_t; then
+        sudo semanage fcontext --add --type  "samba_share_t" /mnt/storage
+        sudo restorecon -R /mnt/storage
+    fi
+    sudo systemctl restart smb
 }
 
 case $HOST in
@@ -119,8 +130,7 @@ case $HOST in
         server
         addT480Partitions
         createGitUser
-        sudo firewall-cmd --permanent --zone=FedoraServer --add-service=samba
-        sudo firewall-cmd --reload
+        setupSamba
         ;;
     razorbook)
         setVars "./shared_desktop"
