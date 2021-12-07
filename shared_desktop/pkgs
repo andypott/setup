@@ -3,6 +3,8 @@
 clang
 clang-tools-extra
 cmake
+code
+composer
 fzf
 gcc-c++
 git
@@ -12,6 +14,7 @@ lollypop
 neovim
 nodejs
 openssh-server
+php
 python3-devel
 ripgrep
 steam

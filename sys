@@ -58,8 +58,14 @@ add_rpmfusion() {
     sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 }
 
+add_vscode() {
+    sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+}
+
 desktop() {
     add_rpmfusion
+    add_vscode
     sudo dnf update --assumeyes --refresh
     install_packages
     sync_files
@@ -109,6 +115,7 @@ createGitUser() {
         sudo chown -R git:git /mnt/git
     fi
     sudo rsync -rv "t480/git/git-shell-commands/" /home/git/git-shell-commands/
+    sudo cp t480/git/.gitconfig /home/git/.gitconfig
     sudo chown -R git:git /home/git
 }
 
@@ -133,7 +140,7 @@ case $HOST in
         createGitUser
         setupSamba
         ;;
-    razorbook)
+    razerbook)
         setVars "./shared_desktop"
         desktop
         ;;

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-dir="/home/git/repos/$1.git"
+if [ ! -z $1]; then
+    dir="/home/git/repos/$1.git"
 
-mkdir $dir
-pushd $dir
-git --bare init
-popd
+    mkdir $dir
+    pushd $dir
+    git --bare init
+    popd
+fi

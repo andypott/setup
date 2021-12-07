@@ -52,7 +52,12 @@ configure_gnome() {
     dconf load / < dconf-settings.ini
 }
 
+add_global_laravel() {
+    composer global require laravel/installer
+}
+
 create_dirs
 create_links
 configure_neovim
-#configure_gnome
+add_global_laravel
+configure_gnome
