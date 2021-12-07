@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ ! -z $1]; then
+if [ ! -z $1 ]; then
     dir="/home/git/repos/$1.git"
 
     mkdir $dir
