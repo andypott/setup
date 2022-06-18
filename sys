@@ -132,6 +132,15 @@ setupSamba() {
     sudo systemctl restart smb
 }
 
+addUltra24DataDisk() {
+    sudo mkdir -p /mnt/data
+    sudo chmod 0777 /mnt/data
+    line="UUID=88a3f90a-533e-4503-a951-14049b6ca7b2 /mnt/data       btrfs   subvol=data,compress=zstd:1 0 0"
+    if ! grep "$line" /etc/fstab; then
+        echo "$line" | sudo tee -a /etc/fstab
+    fi
+}
+
 case $HOST in
     t480)
         setVars "./shared_server"
@@ -147,6 +156,7 @@ case $HOST in
     ultra24)
         setVars "./shared_desktop"
         desktop
+        addUltra24DataDisk
         ;;
 esac
 
