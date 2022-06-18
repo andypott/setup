@@ -9,11 +9,19 @@
 [ -f /usr/share/bash-completion/bash_complation ] && . /usr/share/bash-completion/bash_complation
 
 # User specific environment
-[[ ":$PATH:" != *"$HOME/config/bin"* ]] && PATH="$HOME/config/bin:${PATH}"
-[[ ":$PATH:" != *"$HOME/bin"* ]] && PATH="$HOME/bin:${PATH}"
-[[ ":$PATH:" != *"$HOME/go/bin"* ]] && PATH="$HOME/go/bin:${PATH}"
-[[ ":$PATH:" != *"$HOME/.config/composer/vendor/bin"* ]] && PATH="$HOME/.config/composer/vendor/bin:${PATH}"
-[[ ":$PATH:" != *"$HOME/.local/bin"* ]] && PATH="$HOME/.local/bin:${PATH}"
+declare -a paths=(
+    "$HOME/bin"
+    "$HOME/.local/bin"
+    "$HOME/.local/language-servers/bin"
+    "$HOME/.local/language-servers/node_modules/.bin"
+    "$HOME/.cargo/bin"
+    "$HOME/go/bin"
+    "$HOME/.config/composer/vendor/bin"
+)
+
+for p in "${paths[@]}"; do
+    [[ ":$PATH:" != *"$p"* ]] && PATH="$p:$PATH"
+done
 export PATH
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:

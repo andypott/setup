@@ -39,13 +39,10 @@ create_links() {
 }
 
 configure_neovim() {
-    dest="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
-    if [ ! -f "$dest" ]; then
-        curl -fLo "$dest" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/packer/start/packer.nvim
+    if [ ! -d "$dest" ]; then
+	    git clone --depth 1 https://github.com/wbthomason/packer.nvim $dest
     fi
-    nvim --headless +PlugInstall +qall
-    nvim --headless +GoInstallBinaries +qall
-    echo
 }
 
 configure_gnome() {
@@ -56,8 +53,28 @@ add_global_laravel() {
     composer global require laravel/installer
 }
 
+get_fonts() {
+    url=$(curl -s https://api.github.com/repos/tonsky/FiraCode/releases/latest | jq -r '.assets[0].browser_download_url')
+    wget -o /dev/null -O ~/Downloads/fira_code.zip "$url"
+    mkdir -p ~/.local/share/fonts
+    unzip -d ~/Downloads/fira_code ~/Downloads/fira_code.zip
+    cp ~/Downloads/fira_code/ttf/* ~/.local/share/fonts/.
+    rm -rf ~/Downloads/fira_code
+    rm ~/Downloads/fira_code.zip
+
+    wget -o /dev/null -O ~/.local/share/fonts/"Symbols-2048-em Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/NerdFontsSymbolsOnly/complete/Symbols-2048-em%20Nerd%20Font%20Complete%20Mono.ttf?raw=true
+
+    wget -o /dev/null -O ~/.local/share/fonts/"Symbols-1000-em Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/NerdFontsSymbolsOnly/complete/Symbols-1000-em%20Nerd%20Font%20Complete%20Mono.ttf?raw=true
+    fc-cache -f
+}
+
+install_rustup() {
+    cd "$HOME" && curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+}
+
 create_dirs
 create_links
 configure_neovim
 add_global_laravel
 configure_gnome
+get-fonts

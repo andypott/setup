@@ -1,0 +1,85 @@
+#!/bin/bash
+
+echoerr() { echo "$@" 1>&2; }
+
+if ! which npm >/dev/null 2>&1; then
+    echoerr "Unable to proceeed - npm must be installed"
+    exit 1
+fi
+
+dir=~/.local/language-servers
+
+function installServers() {
+    if [ ! -d "$dir" ]; then
+        mkdir -p "$dir" >/dev/null
+    fi
+
+    pushd "$dir" >/dev/null
+
+    mkdir -p tmp >/dev/null
+    mkdir -p bin >/dev/null
+
+    getLatestLuaLS
+    getNodeServers
+    getGopls
+    getRlsAndAnalyzer
+
+    popd >/dev/null
+}
+
+function getGopls() {
+    go install golang.org/x/tools/gopls@latest
+    go install golang.org/x/tools/cmd/goimports@latest
+}
+
+function getRlsAndAnalyzer() {
+    ~/.cargo/bin/rustup update
+    ~/.cargo/bin/rustup component add rls rust-analysis rust-src
+    curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > bin/rust-analyzer
+    chmod +x bin/rust-analyzer
+}
+
+function getLatestLuaLS() {
+    json=$(curl -s https://api.github.com/repos/sumneko/lua-language-server/releases/latest)
+    downloadurl=$(jq -r '.assets[] | select(.name | contains("linux-x64")).browser_download_url' <<< "$json")
+    version=$(jq -r '.tag_name' <<< "$json")
+    name="lua-language-server__$version"
+    filepath="tmp/$name.tar.gz"
+    wget -O "$filepath" "$downloadurl"
+    mkdir -p "./$name" >/dev/null
+    tar -xf "$filepath" -C "./$name"
+
+
+    echo "#!/bin/bash" > bin/lua-language-server
+    echo "exec \"~/.local/language-servers/$name/bin/lua-language-server\" \"\$@\"" >> bin/lua-language-server
+    chmod +x bin/lua-language-server
+}
+
+function getNodeServers() {
+
+    (cat <<EOF
+{
+  "name": "language-servers",
+  "version": "1.0.0",
+  "description": "language servers for neovim",
+  "main": "index.js",
+  "author": "Andy Potter",
+  "license": "ISC",
+  "dependencies": {
+    "bash-language-server": "*",
+    "eslint": "*",
+    "prettier": "*",
+    "typescript": "*",
+    "typescript-language-server": "*",
+    "@typescript-eslint/parser": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "vscode-langservers-extracted": "*" 
+  }
+}
+EOF
+    ) >package.json
+
+    npm update
+}
+
+installServers
