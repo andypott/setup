@@ -5,6 +5,7 @@ clang-tools-extra
 cmake
 code
 composer
+fd-find
 fzf
 gcc-c++
 git

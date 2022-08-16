@@ -23,4 +23,4 @@ vim.g.gruvbox_material_background = "hard"
 vim.cmd("colorscheme gruvbox-material")
 
 -- Javascript 
-vim.api.nvim_command("autocmd FileType javascript,javascriptreact,javascript.jsx,typescript,typescriptreact,typescript.tsx,css,lua setlocal shiftwidth=2 tabstop=2 softtabstop=2");
+vim.api.nvim_command("autocmd FileType javascript,javascriptreact,javascript.jsx,typescript,typescriptreact,typescript.tsx,css,lua,json setlocal shiftwidth=2 tabstop=2 softtabstop=2");

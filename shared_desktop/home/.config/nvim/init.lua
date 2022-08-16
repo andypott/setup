@@ -4,6 +4,7 @@ require('nvim-treesitter.configs').setup {
     highlight = { enable = true },
     ensure_installed = "all",
 }
+require('plugins.telescope')
 require('options')
 require('keybindings')
 

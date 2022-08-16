@@ -141,6 +141,11 @@ addUltra24DataDisk() {
     fi
 }
 
+addFlathub() {
+    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    sudo flatpak remote-modify --enable flathub
+}
+
 case $HOST in
     t480)
         setVars "./shared_server"
@@ -152,11 +157,13 @@ case $HOST in
     razerbook)
         setVars "./shared_desktop"
         desktop
+        addFlathub
         ;;
     ultra24)
         setVars "./shared_desktop"
         desktop
         addUltra24DataDisk
+        addFlathub
         ;;
 esac
 

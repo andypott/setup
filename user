@@ -72,6 +72,10 @@ install_rustup() {
     cd "$HOME" && curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 }
 
+install_flatpaks() {
+    flatpak install flathub com.github.libresprite.LibreSprite
+}
+
 create_dirs
 create_links
 configure_neovim
@@ -79,3 +83,4 @@ add_global_laravel
 configure_gnome
 get_fonts
 install_rustup
+install_flatpaks

@@ -73,7 +73,7 @@ function getNodeServers() {
     "typescript-language-server": "*",
     "@typescript-eslint/parser": "*",
     "@typescript-eslint/eslint-plugin": "*",
-    "vscode-langservers-extracted": "*" 
+    "vscode-langservers-extracted": "*"
   }
 }
 EOF
