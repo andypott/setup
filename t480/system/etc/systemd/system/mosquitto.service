@@ -1,0 +1,19 @@
+[Unit]
+Description=Mosquitto Podman container
+After=network.target
+
+[Service]
+User=hass
+Group=hass
+Type=simple
+TimeoutStartSec=5m
+ExecStartPre=-/usr/bin/podman rm -f mosquitto
+ExecStart=podman run --name mosquitto --rm -p "9001:9001" -p "1883:1883" -v "/mnt/hass/mosquitto-data:/mosquitto:z" docker.io/eclipse-mosquitto:latest mosquitto -c /mosquitto-no-auth.conf
+ExecReload=-/usr/bin/podman stop mosquitto
+ExecReload=-/usr/bin/podman rm -f mosquitto
+ExecStop=-/usr/bin/podman stop mosquitto
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

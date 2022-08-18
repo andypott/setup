@@ -1,0 +1,19 @@
+[Unit]
+Description=Home Assistant Podman container
+After=network.target
+
+[Service]
+User=hass
+Group=hass
+Type=simple
+TimeoutStartSec=5m
+ExecStartPre=-/usr/bin/podman rm -f "hass"
+ExecStart=podman run --name=hass -v /mnt/hass/config:/config:z -v /etc/localtime:/etc/localtime:ro --net=host docker.io/homeassistant/home-assistant:latest
+ExecReload=-/usr/bin/podman stop "hass"
+ExecReload=-/usr/bin/podman rm "hass"
+ExecStop=-/usr/bin/podman stop "hass"
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

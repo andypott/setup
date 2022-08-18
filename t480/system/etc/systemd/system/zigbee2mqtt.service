@@ -1,0 +1,19 @@
+[Unit]
+Description=Zigbee2MQTT Podman container
+After=network.target mosquitto.service
+
+[Service]
+User=hass
+Group=hass
+Type=simple
+TimeoutStartSec=5m
+ExecStartPre=-/usr/bin/podman rm -f zigbee2mqtt
+ExecStart=podman run --name zigbee2mqtt --rm --group-add keep-groups -v /run/udev:/run/udev:ro -v /mnt/hass/zigbee2mqtt-data:/app/data:z --net=host -e "TZ=Europe/London" --device "/dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_86b695cf5286ec11803ce73719c2d21c-if00-port0:/dev/ttyUSB0" docker.io/koenkk/zigbee2mqtt
+ExecReload=-/usr/bin/podman stop zigbee2mqtt
+ExecReload=-/usr/bin/podman rm zigbee2mqtt
+ExecStop=-/usr/bin/podman stop zigbee2mqtt
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
