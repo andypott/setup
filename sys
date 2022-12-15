@@ -88,6 +88,7 @@ addT480Partitions() {
     mkdir -p /mnt/storage
     mkdir -p /mnt/snapshots
     mkdir -p /mnt/git
+    mkdir -p /mnt/hass
     if ! grep /mnt/storage /etc/fstab; then
         echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/storage btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@storage 0 0" | sudo tee -a /etc/fstab
         mount /mnt/storage
@@ -99,6 +100,10 @@ addT480Partitions() {
     if ! grep /mnt/git /etc/fstab; then
         echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/git btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@git 0 0" | sudo tee -a /etc/fstab
         mount /mnt/git
+    fi
+    if ! grep /mnt/hass /etc/fstab; then
+        echo "UUID=3c714e43-7a49-439c-8280-47b069806b97 /mnt/git btrfs rw,relatime,compress=zstd,ssd,space_cache,subvol=@hass 0 0" | sudo tee -a /etc/fstab
+        mount /mnt/hass
     fi
 }
 
@@ -117,6 +122,32 @@ createGitUser() {
     sudo rsync -rv "t480/git/git-shell-commands/" /home/git/git-shell-commands/
     sudo cp t480/git/.gitconfig /home/git/.gitconfig
     sudo chown -R git:git /home/git
+}
+
+setupHomeAssistant() {
+    # User for home assistant, dialout needed for zigbee stick
+    if ! id -u hass; then
+        sudo useradd hass -r -m -d /var/lib/hass -G dialout
+	# because this is a system account needs extra subuids
+	NEW_SUBUID=$(($(tail -1 /etc/subuid |awk -F ":" '{print $2}')+65536))
+	NEW_SUBGID=$(($(tail -1 /etc/subgid |awk -F ":" '{print $2}')+65536))
+	sudo usermod --add-subuids  ${NEW_SUBUID}-$((${NEW_SUBUID}+65535)) --add-subgids  ${NEW_SUBGID}-$((${NEW_SUBGID}+65535)) hass
+	sudo loginctl enable-linger hass
+	sudo chown -R hass:hass /mnt/hass
+    	sudo setsebool -P container_use_devices 1 #needed for zigbee2mqtt to access device
+    fi
+    if ! sudo firewall-cmd --zone=FedoraServer --query-port=8123/tcp; then
+        sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8123/tcp
+        sudo firewall-cmd --reload
+    fi
+    if ! sudo firewall-cmd --zone=FedoraServer --query-port=8080/tcp; then
+        sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8080/tcp
+        sudo firewall-cmd --reload
+    fi
+    if ! sudo ls -ldZ /var/lib/hass | grep user_home_dir_t; then
+	sudo semanage fcontext --add --type  user_home_dir_t "/var/lib/hass(/.+)?"
+        sudo restorecon -FR /var/lib/hass
+    fi
 }
 
 setupSamba() {
@@ -153,6 +184,8 @@ case $HOST in
         addT480Partitions
         createGitUser
         setupSamba
+	setupHomeAssistant
+	sudo timedatectl set-ntp yes
         ;;
     razerbook)
         setVars "./shared_desktop"
