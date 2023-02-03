@@ -38,15 +38,30 @@ create_links() {
     done
 }
 
-configure_neovim() {
-    dest="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/packer/start/packer.nvim
-    if [ ! -d "$dest" ]; then
-	    git clone --depth 1 https://github.com/wbthomason/packer.nvim $dest
-    fi
-}
-
 configure_gnome() {
-    dconf load / < dconf-settings.ini
+    # Use a dark color scheme
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    
+    # Make touchpad usable
+    gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
+    gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
+
+    # Set screen turn off delay to 15 mins
+    gsettings set org.gnome.desktop.session idle-delay 'uint32 900'
+
+    # Set shortcuts
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Kitty'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'kitty'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Super>Return'
+
+    # Disable sleep on AC
+    gsettings set org.gnome.settings-daemon.plugins.power ambient-enabled false
+    gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+
+    # Don't use gnome software for updates
+    gsettings set org.gnome.software download-updates false
+    gsettings set org.gnome.software download-updates-notify false
 }
 
 add_global_laravel() {
@@ -70,15 +85,17 @@ get_fonts() {
 
 install_rustup() {
     cd "$HOME" && curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+    cargo install stylua
 }
 
 install_flatpaks() {
     flatpak install flathub com.github.libresprite.LibreSprite
+    flatpak install flathub com.valvesoftware.Steam
+    flatpak install flathub com.valvesoftware.Steam.CompatibilityTool.Proton-GE
 }
 
 create_dirs
 create_links
-configure_neovim
 add_global_laravel
 configure_gnome
 get_fonts

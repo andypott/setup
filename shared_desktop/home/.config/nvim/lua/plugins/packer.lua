@@ -1,6 +1,9 @@
 return require("packer").startup(function()
     use "wbthomason/packer.nvim" -- use packer to manager itself
 
+    use "williamboman/mason.nvim" -- install language servers
+    use "williamboman/mason-lspconfig.nvim"
+
     use "sainnhe/gruvbox-material" -- colour scheme
 
     use {
