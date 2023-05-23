@@ -64,10 +64,15 @@ add_vscode() {
 }
 
 desktop() {
-    add_rpmfusion
-    add_vscode
+    #add_rpmfusion
+    #add_vscode
     sudo dnf update --assumeyes --refresh
+    # input group for keyoboard-state to work in waybar 
+    sudo usermod -a -G input andy
     install_packages
+    # remove firefox, flatpak will be installed for better code support
+    # fuzzel will be used instead of rofi
+    sudo dnf remove firefox rofi -y
     sync_files
     enable_services
 }

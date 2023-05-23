@@ -6,12 +6,11 @@ local servers = {
 	"gopls",
 	"html",
 	"jsonls",
-	--'rls',
 	"rust_analyzer",
 	"tsserver",
 }
 local servers_to_install = table.pack(table.unpack(servers))
-table.insert(servers_to_install, "sumneko_lua")
+table.insert(servers_to_install, "lua_ls")
 
 require("mason").setup()
 require("mason-lspconfig").setup({
@@ -78,8 +77,8 @@ cmp.setup({
 		["<Tab>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
+			--			elseif luasnip.expand_or_locally_jumpable() then
+			--				luasnip.expand_or_jump()
 			else
 				fallback()
 			end
@@ -87,8 +86,8 @@ cmp.setup({
 		["<S-Tab>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
-				luasnip.jump(-1)
+			--			elseif luasnip.jumpable(-1) then
+			--				luasnip.jump(-1)
 			else
 				fallback()
 			end
@@ -117,7 +116,7 @@ local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
-require("lspconfig").sumneko_lua.setup({
+require("lspconfig").lua_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 	settings = {

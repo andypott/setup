@@ -69,17 +69,16 @@ add_global_laravel() {
 }
 
 get_fonts() {
-    url=$(curl -s https://api.github.com/repos/tonsky/FiraCode/releases/latest | jq -r '.assets[0].browser_download_url')
-    wget -o /dev/null -O ~/Downloads/fira_code.zip "$url"
     mkdir -p ~/.local/share/fonts
-    unzip -d ~/Downloads/fira_code ~/Downloads/fira_code.zip
-    cp ~/Downloads/fira_code/ttf/* ~/.local/share/fonts/.
-    rm -rf ~/Downloads/fira_code
-    rm ~/Downloads/fira_code.zip
 
-    wget -o /dev/null -O ~/.local/share/fonts/"Symbols-2048-em Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/NerdFontsSymbolsOnly/complete/Symbols-2048-em%20Nerd%20Font%20Complete%20Mono.ttf?raw=true
+    if [ ! -f ~/.local/share/fonts/SymbolsNerdFont-Regular.ttf ]; then
+        wget -o /dev/null -O ~/.local/share/fonts/SymbolsNerdFont-Regular.ttf https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/NerdFontsSymbolsOnly/SymbolsNerdFont-Regular.ttf?raw=true
+    fi
 
-    wget -o /dev/null -O ~/.local/share/fonts/"Symbols-1000-em Nerd Font Complete Mono.ttf" https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/NerdFontsSymbolsOnly/complete/Symbols-1000-em%20Nerd%20Font%20Complete%20Mono.ttf?raw=true
+    if [ ! -f ~/.local/share/fonts/SymbolsNerdFontMono-Regular.ttf ]; then
+        wget -o /dev/null -O ~/.local/share/fonts/SymbolsNerdFontMono-Regular.ttf https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/NerdFontsSymbolsOnly/SymbolsNerdFontMono-Regular.ttf?raw=true
+    fi
+
     fc-cache -f
 }
 
@@ -89,15 +88,20 @@ install_rustup() {
 }
 
 install_flatpaks() {
-    flatpak install flathub com.github.libresprite.LibreSprite
-    flatpak install flathub com.valvesoftware.Steam
-    flatpak install flathub com.valvesoftware.Steam.CompatibilityTool.Proton-GE
+    flatpak install -y flathub com.github.libresprite.LibreSprite
+    flatpak install -y flathub com.valvesoftware.Steam
+    flatpak install -y flathub com.valvesoftware.Steam.CompatibilityTool.Proton-GE
+    flatpak install -y flathub org.videolan.VLC
+    flatpak install -y flathub org.freedesktop.Platform.ffmpeg-full
+    flatpak install -y flathub org.mozilla.firefox
+    flatpak --user override --socket=wayland --env=MOZ_ENABLE_WAYLAND=1 org.mozilla.firefox
 }
 
 create_dirs
 create_links
 add_global_laravel
-configure_gnome
+#configure_gnome
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 get_fonts
 install_rustup
 install_flatpaks

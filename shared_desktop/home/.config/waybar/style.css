@@ -1,0 +1,111 @@
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: Noto Sans, FontAwesome;
+    font-size: 14px;
+}
+
+window#waybar {
+    background-color: #141617;
+}
+
+button {
+    border: 1px solid transparent;
+    box-shadow: none;
+    text-shadow: none;
+    background: transparent;
+}
+
+#workspaces button {
+    margin: 3px;
+    padding: 0 5px;
+    border-radius: 5;
+    color: #fabd2f;
+}
+
+#workspaces button:hover {
+    border: 1px solid #fabd2f;
+}
+
+#workspaces button.focused {
+    background-color: #fabd2f;
+    color: #141617;
+}
+
+#workspaces button.urgent {
+    background-color: #cc241d;
+}
+
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#mpd {
+    padding: 0 10px;
+    margin: 3px 0px;
+    border-radius: 5px;
+    background-color: #fabd2f;
+    color: #141617;
+}
+
+#clock {
+    color: #fabd2f;
+    background-color: #141617;
+}
+
+#battery.charging {
+    background-color: #b8bb26;
+}
+
+#battery.discharging {
+    background-color: #fe8019;
+}
+
+#battery.discharging.warning {
+    background-color: #cc241d;
+}
+
+@keyframes blink {
+    to {
+        background-color: #141617;
+    }
+}
+
+#battery.critical:not(.charging) {
+    background-color: #cc241d;
+    color: #ebdbb2;
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#idle_inhibitor {
+    background-color: #282828;
+}
+
+#idle_inhibitor.activated {
+    background-color: #ebdbb2;
+}
+
+#scratchpad {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad.empty {
+	background-color: transparent;
+}

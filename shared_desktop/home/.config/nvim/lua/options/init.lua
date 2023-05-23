@@ -7,8 +7,6 @@ vim.opt.softtabstop = 4
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
-vim.opt.termguicolors = true
-
 vim.opt.mouse = "a"
 vim.opt.clipboard = "unnamedplus"
 
@@ -16,10 +14,17 @@ vim.opt.scrolloff = 5
 vim.opt.hidden = true -- allow buffers to remain open in background with unsaved changes
 vim.opt.number = true -- enable line numbers
 vim.opt.signcolumn = "number" -- show diag errors in the number column (saves on width)
+vim.opt.relativenumber = true
 
+vim.opt.termguicolors = true
 vim.opt.background = "dark"
 vim.g.gruvbox_material_background = "hard"
-vim.cmd("colorscheme gruvbox-material")
+vim.g.gruvbox_material_foreground = "original"
+vim.cmd.colorscheme("gruvbox-material")
+-- vim.api.nvim_command([[
+--   hi Normal guibg=NONE ctermbg=NONE
+--   hi EndOfBuffer guibg=NONE ctermbg=NONE
+-- ]])
 
 -- 2 Spaces
 vim.api.nvim_command(
