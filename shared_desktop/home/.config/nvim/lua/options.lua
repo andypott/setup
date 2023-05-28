@@ -21,15 +21,3 @@ vim.opt.background = "dark"
 vim.g.gruvbox_material_background = "hard"
 vim.g.gruvbox_material_foreground = "original"
 vim.cmd.colorscheme("gruvbox-material")
--- vim.api.nvim_command([[
---   hi Normal guibg=NONE ctermbg=NONE
---   hi EndOfBuffer guibg=NONE ctermbg=NONE
--- ]])
-
--- 2 Spaces
-vim.api.nvim_command(
-	"autocmd FileType c,cpp,javascript,javascriptreact,javascript.jsx,typescript,typescriptreact,typescript.tsx,css,lua,json setlocal shiftwidth=2 tabstop=2 softtabstop=2"
-)
-
--- Actual Tabs
-vim.api.nvim_command("autocmd FileType make setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8")

@@ -84,7 +84,6 @@ get_fonts() {
 
 install_rustup() {
     cd "$HOME" && curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
-    cargo install stylua
 }
 
 install_flatpaks() {
