@@ -62,6 +62,13 @@ require("mason-null-ls").setup({
 
 local cmp = require("cmp")
 cmp.setup({
+	sources = {
+		{ name = "path" },
+		{ name = "nvim_lsp" },
+		{ name = "buffer", keyword_length = 3 },
+		{ name = "luasnip", keyword_length = 2 },
+		{ name = "neorg" },
+	},
 	mapping = {
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
 	},
