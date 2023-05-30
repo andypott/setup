@@ -27,7 +27,7 @@ require("lazy").setup({
 		opts = {
 			load = {
 				["core.defaults"] = {},
-        ["core.qol.toc"] = { config = { close_after_use = true } },
+				["core.qol.toc"] = { config = { close_after_use = true } },
 				["core.concealer"] = { config = { folds = false } },
 				["core.completion"] = { config = { engine = "nvim-cmp" } },
 				["core.dirman"] = { -- Manages Neorg workspaces
@@ -40,5 +40,9 @@ require("lazy").setup({
 			},
 		},
 		dependencies = { { "nvim-lua/plenary.nvim" } },
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { { "nvim-tree/nvim-web-devicons" } },
 	},
 })
