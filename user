@@ -98,7 +98,7 @@ install_flatpaks() {
 
 create_dirs
 create_links
-add_global_laravel
+#add_global_laravel
 #configure_gnome
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 get_fonts
