@@ -17,12 +17,14 @@ git
 golang
 gstreamer1-plugins-bad-free-extras
 gvfs-smb
+jetbrains-mono-fonts-all
 jq
 libdav1d
 neovim
 nodejs
 okular
 openssh-server
+p7zip
 php
 python3-devel
 qalc

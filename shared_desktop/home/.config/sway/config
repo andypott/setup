@@ -234,6 +234,9 @@ client.focused_inactive $unfocus $unfocus $unfocus_text $unfocus
 client.focused_tab_title $unfocus $unfocus $unfocus_text $unfocus
 client.urgent $urgent $urgent $focus_text $focus_indicator
 
+# Make 86box windows floating
+for_window [class="86Box"] floating enable
+
 # set timeout variables
 # used in /usr/share/sway/config.d/90-swayidle.conf
 set $lock_timeout 600
