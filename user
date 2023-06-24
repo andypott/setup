@@ -92,7 +92,9 @@ install_flatpaks() {
     flatpak install -y flathub com.valvesoftware.Steam.CompatibilityTool.Proton-GE
     flatpak install -y flathub org.videolan.VLC
     flatpak install -y flathub org.freedesktop.Platform.ffmpeg-full
+    flatpak install -y flathub org.zealdocs.Zeal
     flatpak install -y flathub org.mozilla.firefox
+
     flatpak --user override --socket=wayland --env=MOZ_ENABLE_WAYLAND=1 org.mozilla.firefox
 }
 
